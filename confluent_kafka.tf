@@ -295,7 +295,7 @@ resource "confluent_connector" "sink" {
     id = var.kafka.cluster.id
   }
 
-  # here comes the bigquery stuff
+  # BigQuerySink related config:
 
   // Block for custom *sensitive* configuration properties that are labelled with "Type: password" under "Configuration Properties" section in the docs:
   // https://docs.confluent.io/cloud/current/connectors/cc-gcp-bigquery-sink.html#configuration-properties
