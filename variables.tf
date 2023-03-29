@@ -34,7 +34,7 @@ variable "gcp" {
     dataset     = string
   })
   description = <<EOT
-credentials: Your GCP credentials JSON
+credentials: Your GCP credentials JSON file location
 project: The GCP project of your data product
 dataset: The BigQuery dataset in which the big query tables are located
 EOT

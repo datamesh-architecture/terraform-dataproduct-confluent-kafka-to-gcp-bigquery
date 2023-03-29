@@ -300,7 +300,7 @@ resource "confluent_connector" "sink" {
   // Block for custom *sensitive* configuration properties that are labelled with "Type: password" under "Configuration Properties" section in the docs:
   // https://docs.confluent.io/cloud/current/connectors/cc-gcp-bigquery-sink.html#configuration-properties
   config_sensitive = {
-    "keyfile" = var.gcp.credentials
+    "keyfile" = file(var.gcp.credentials)
   }
 
   // Block for custom *nonsensitive* configuration properties that are *not* labelled with "Type: password" under "Configuration Properties" section in the docs:
