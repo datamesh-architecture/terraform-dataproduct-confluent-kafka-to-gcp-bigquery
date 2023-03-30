@@ -300,7 +300,7 @@ resource "confluent_connector" "sink" {
   // Block for custom *sensitive* configuration properties that are labelled with "Type: password" under "Configuration Properties" section in the docs:
   // https://docs.confluent.io/cloud/current/connectors/cc-gcp-bigquery-sink.html#configuration-properties
   config_sensitive = {
-    "keyfile" = file(var.gcp.credentials)
+    "keyfile" = base64decode(google_service_account_key.kafka_sink_gcp_service_account_key.private_key)
   }
 
   // Block for custom *nonsensitive* configuration properties that are *not* labelled with "Type: password" under "Configuration Properties" section in the docs:
@@ -322,6 +322,7 @@ resource "confluent_connector" "sink" {
   }
 
   depends_on = [
+    google_bigquery_dataset_iam_binding.kafka_sink_dataset_iam_binding,
     confluent_kafka_acl.app-connector-describe-on-cluster,
     confluent_kafka_acl.app-connector-read-on-target-topic,
     confluent_kafka_acl.app-connector-create-on-dlq-lcc-topics,

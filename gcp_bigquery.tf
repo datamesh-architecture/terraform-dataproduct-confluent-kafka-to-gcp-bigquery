@@ -25,19 +25,30 @@ resource "google_bigquery_table" "gcp_bigquery_tables" {
   }
 }
 
-# grant read access to consumers
-data "google_iam_policy" "data_product_consumer" {
-  binding {
-    role    = "roles/bigquery.dataViewer"
-    members = var.output.grant_access
-  }
+# service account for the sink
+resource "google_service_account" "kafka_sink_gcp_service_account" {
+  account_id   = "confluent-kafka-bigquery-sink"
+  display_name = "Confluent Kafka Big Query Sink"
 }
 
-resource "google_bigquery_table_iam_policy" "policy" {
+resource "google_service_account_key" "kafka_sink_gcp_service_account_key" {
+  service_account_id = google_service_account.kafka_sink_gcp_service_account.name
+}
+
+# grant read access to consumers on table level
+resource "google_bigquery_table_iam_binding" "table_iam_binding" {
   for_each = google_bigquery_table.gcp_bigquery_tables
 
   project     = each.value.project
   dataset_id  = each.value.dataset_id
   table_id    = each.value.table_id
-  policy_data = data.google_iam_policy.data_product_consumer.policy_data
+  members     = var.output.grant_access
+  role    = "roles/bigquery.dataViewer"
+}
+
+# read + write access to kafka sink service account on dataset level
+resource "google_bigquery_dataset_iam_binding" "kafka_sink_dataset_iam_binding" {
+  dataset_id  = google_bigquery_dataset.gcp_bigquery_dataset.dataset_id
+  members = [google_service_account.kafka_sink_gcp_service_account.member]
+  role    = "roles/bigquery.dataEditor"
 }
