@@ -60,3 +60,37 @@ topic: Name of the Kafka topic which should be processed
 format: Currently only 'JSON' is supported
 EOT
 }
+
+variable "output" {
+  type = object({
+    dataset_id          = string
+    dataset_description = string
+    grant_access        = list(string)
+    tables              = list(object({
+      name                    = string
+      bigquery_schema         = string
+      delete_on_destroy       = bool
+    }))
+  })
+  description = <<EOT
+dataset_id: The id of the dataset in which your data product will exist
+dataset_description: A description of the dataset
+tables.name: The name of your dataproduct, which will be used to create a BigQuery table. Must be equal to the corresponding kafka topic name.
+tables.bigquery_schema: The path to the products bigquery schema
+tables.delete_on_destroy: 'true' if the BigQuery table should be deleted if the terraform resource gets destroyed. Use with care!
+tables.time_partitioning_type:
+EOT
+}
+
+variable "output_tables_time_partitioning" {
+  type = map(object({
+    type  = string
+    field = string
+  }))
+  default = {}
+  description = <<EOT
+You can configure time based partitioning by passing an object which has the tables name as its key.
+type: Possible values are: DAY, HOUR, MONTH, YEAR
+field: The field which should be used for partitioning. Falls back to ingestion time, if null is passed.
+EOT
+}

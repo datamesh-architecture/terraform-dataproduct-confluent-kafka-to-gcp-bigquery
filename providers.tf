@@ -4,5 +4,9 @@ terraform {
       source  = "confluentinc/confluent"
       version = "~> 1.35"
     }
+    google = {
+      source  = "hashicorp/google"
+      version = "4.51.0"
+    }
   }
 }
