@@ -91,6 +91,6 @@ variable "output_tables_time_partitioning" {
   description = <<EOT
 You can configure time based partitioning by passing an object which has the tables name as its key.
 type: Possible values are: DAY, HOUR, MONTH, YEAR
-field: The field which should be used for partitioning. Falls back to ingestion time, if null is passed.
+field: The field which should be used for partitioning. Falls back to consumption time, if null is passed.
 EOT
 }
