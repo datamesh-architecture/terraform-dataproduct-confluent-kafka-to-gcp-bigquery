@@ -2,6 +2,7 @@
 resource "google_bigquery_dataset" "gcp_bigquery_dataset" {
   dataset_id  = var.output.dataset_id
   description = var.output.dataset_description
+  location    = var.output.region
 }
 
 # create tables
@@ -39,16 +40,16 @@ resource "google_service_account_key" "kafka_sink_gcp_service_account_key" {
 resource "google_bigquery_table_iam_binding" "table_iam_binding" {
   for_each = google_bigquery_table.gcp_bigquery_tables
 
-  project     = each.value.project
-  dataset_id  = each.value.dataset_id
-  table_id    = each.value.table_id
-  members     = var.output.grant_access
-  role    = "roles/bigquery.dataViewer"
+  project    = each.value.project
+  dataset_id = each.value.dataset_id
+  table_id   = each.value.table_id
+  members    = var.output.grant_access
+  role       = "roles/bigquery.dataViewer"
 }
 
 # read + write access to kafka sink service account on dataset level
 resource "google_bigquery_dataset_iam_binding" "kafka_sink_dataset_iam_binding" {
-  dataset_id  = google_bigquery_dataset.gcp_bigquery_dataset.dataset_id
-  members = [google_service_account.kafka_sink_gcp_service_account.member]
-  role    = "roles/bigquery.dataEditor"
+  dataset_id = google_bigquery_dataset.gcp_bigquery_dataset.dataset_id
+  members    = [google_service_account.kafka_sink_gcp_service_account.member]
+  role       = "roles/bigquery.dataEditor"
 }

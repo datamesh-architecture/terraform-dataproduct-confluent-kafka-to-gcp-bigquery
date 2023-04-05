@@ -66,15 +66,20 @@ variable "output" {
     dataset_id          = string
     dataset_description = string
     grant_access        = list(string)
-    tables              = list(object({
-      name                    = string
-      bigquery_schema         = string
-      delete_on_destroy       = bool
+    discovery_access    = list(string)
+    region              = string
+    tables = list(object({
+      name              = string
+      bigquery_schema   = string
+      delete_on_destroy = bool
     }))
   })
   description = <<EOT
 dataset_id: The id of the dataset in which your data product will exist
 dataset_description: A description of the dataset
+grant_access: List of users with access to the data product
+discovery_access: List of users with access to the discovery endpoint
+region: The google cloud region in which your data product should be created
 tables.name: The name of your dataproduct, which will be used to create a BigQuery table. Must be equal to the corresponding kafka topic name.
 tables.bigquery_schema: The path to the products bigquery schema
 tables.delete_on_destroy: 'true' if the BigQuery table should be deleted if the terraform resource gets destroyed. Use with care!
@@ -87,7 +92,7 @@ variable "output_tables_time_partitioning" {
     type  = string
     field = string
   }))
-  default = {}
+  default     = {}
   description = <<EOT
 You can configure time based partitioning by passing an object which has the tables name as its key.
 type: Possible values are: DAY, HOUR, MONTH, YEAR
