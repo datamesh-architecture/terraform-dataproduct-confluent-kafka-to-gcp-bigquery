@@ -1,7 +1,7 @@
 # create dataset
 resource "google_bigquery_dataset" "gcp_bigquery_dataset" {
-  dataset_id  = var.output.dataset_id
-  description = var.output.dataset_description
+  dataset_id  = "source"
+  description = "Raw data consumed from Confluent Kafka."
   location    = var.output.region
 }
 

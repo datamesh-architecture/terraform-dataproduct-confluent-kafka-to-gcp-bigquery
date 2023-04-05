@@ -63,11 +63,9 @@ EOT
 
 variable "output" {
   type = object({
-    dataset_id          = string
-    dataset_description = string
-    grant_access        = list(string)
-    discovery_access    = list(string)
-    region              = string
+    grant_access     = list(string)
+    discovery_access = list(string)
+    region           = string
     tables = list(object({
       name              = string
       bigquery_schema   = string
@@ -83,7 +81,6 @@ region: The google cloud region in which your data product should be created
 tables.name: The name of your dataproduct, which will be used to create a BigQuery table. Must be equal to the corresponding kafka topic name.
 tables.bigquery_schema: The path to the products bigquery schema
 tables.delete_on_destroy: 'true' if the BigQuery table should be deleted if the terraform resource gets destroyed. Use with care!
-tables.time_partitioning_type:
 EOT
 }
 
