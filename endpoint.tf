@@ -33,7 +33,7 @@ data "archive_file" "info_lambda_archive" {
 
 resource "google_storage_bucket" "bucket" {
   name                        = "${var.name}-info-gfc-source"
-  location                    = var.output.region
+  location                    = var.gcp.region
   uniform_bucket_level_access = true
 }
 
@@ -47,7 +47,7 @@ resource "google_storage_bucket_object" "function_source" {
 
 resource "google_cloudfunctions2_function" "function" {
   name     = "info"
-  location = var.output.region
+  location = var.gcp.region
 
   build_config {
     runtime     = "nodejs18"

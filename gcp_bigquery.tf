@@ -2,18 +2,18 @@
 resource "google_bigquery_dataset" "gcp_bigquery_dataset" {
   dataset_id  = "source"
   description = "Raw data consumed from Confluent Kafka."
-  location    = var.output.region
+  location    = var.gcp.region
 }
 
 # create tables
 resource "google_bigquery_table" "gcp_bigquery_tables" {
-  for_each = zipmap([for table in var.output.tables : table.name], var.output.tables)
+  for_each = zipmap([for table in var.output.tables : table.id], var.output.tables)
 
   dataset_id          = google_bigquery_dataset.gcp_bigquery_dataset.dataset_id
-  table_id            = each.value.name
+  table_id            = each.value.id
   deletion_protection = !each.value.delete_on_destroy
 
-  schema = file(each.value.bigquery_schema)
+  schema = file(each.value.schema)
 
   dynamic "time_partitioning" {
     # only add content block if found in output_time_partitioning
@@ -43,7 +43,7 @@ resource "google_bigquery_table_iam_binding" "table_iam_binding" {
   project    = each.value.project
   dataset_id = each.value.dataset_id
   table_id   = each.value.table_id
-  members    = var.output.grant_access
+  members    = var.output.data_access
   role       = "roles/bigquery.dataViewer"
 }
 

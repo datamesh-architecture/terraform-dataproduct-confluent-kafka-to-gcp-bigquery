@@ -318,7 +318,7 @@ resource "confluent_connector" "sink" {
     "partitioning.type" = "NONE"
 
     "project"  = var.gcp.project
-    "datasets" = var.gcp.dataset
+    "datasets" = "source"
   }
 
   depends_on = [

@@ -1,12 +1,3 @@
-variable "confluent" {
-  type = object({
-    cloud_api_key    = string
-    cloud_api_secret = string
-  })
-  sensitive   = true
-  description = "Confluent (Cloud) related credentials"
-}
-
 variable "kafka" {
   type = object({
     environment = object({
@@ -29,14 +20,12 @@ variable "kafka" {
 
 variable "gcp" {
   type = object({
-    credentials = string
-    project     = string
-    dataset     = string
+    project = string
+    region  = string
   })
   description = <<EOT
-credentials: Your GCP credentials JSON file location
 project: The GCP project of your data product
-dataset: The BigQuery dataset in which the big query tables are located
+region: The GCP region where your data product should be located
 EOT
 }
 
@@ -63,12 +52,11 @@ EOT
 
 variable "output" {
   type = object({
-    grant_access     = list(string)
+    data_access      = list(string)
     discovery_access = list(string)
-    region           = string
     tables = list(object({
-      name              = string
-      bigquery_schema   = string
+      id                = string
+      schema            = string
       delete_on_destroy = bool
     }))
   })
@@ -78,8 +66,8 @@ dataset_description: A description of the dataset
 grant_access: List of users with access to the data product
 discovery_access: List of users with access to the discovery endpoint
 region: The google cloud region in which your data product should be created
-tables.name: The name of your dataproduct, which will be used to create a BigQuery table. Must be equal to the corresponding kafka topic name.
-tables.bigquery_schema: The path to the products bigquery schema
+tables.id: The table_id of your data product, which will be used to create a BigQuery table. Must be equal to the corresponding kafka topic name.
+tables.schema: The path to the products bigquery schema
 tables.delete_on_destroy: 'true' if the BigQuery table should be deleted if the terraform resource gets destroyed. Use with care!
 EOT
 }
@@ -91,7 +79,7 @@ variable "output_tables_time_partitioning" {
   }))
   default     = {}
   description = <<EOT
-You can configure time based partitioning by passing an object which has the tables name as its key.
+You can configure time based partitioning by passing an object which has the tables id as its key.
 type: Possible values are: DAY, HOUR, MONTH, YEAR
 field: The field which should be used for partitioning. Falls back to consumption time, if null is passed.
 EOT
