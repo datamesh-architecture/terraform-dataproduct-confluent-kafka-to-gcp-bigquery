@@ -63,7 +63,7 @@ variable "output" {
   description = <<EOT
 dataset_id: The id of the dataset in which your data product will exist
 dataset_description: A description of the dataset
-grant_access: List of users with access to the data product
+data_access: List of users with access to the data product
 discovery_access: List of users with access to the discovery endpoint
 region: The google cloud region in which your data product should be created
 tables.id: The table_id of your data product, which will be used to create a BigQuery table. Must be equal to the corresponding kafka topic name.
