@@ -1,0 +1,18 @@
+name: Terraform Gitbub Actions
+
+on: [push]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: terraform-linters/setup-tflint@v3
+        with:
+          tflint_version: latest
+      - run: tflint --version
+      - run: tflint -f compact
+      - uses: docker://hashicorp/terraform:1.5.5
+        with:
+          entrypoint: terraform
+          args: init
+      - run: terraform validate

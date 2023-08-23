@@ -136,7 +136,7 @@ Examples, how to use this module, can be found in a separate [GitHub repository]
 
 ## Authors
 
-This terraform module is maintained by [Stefan Negele](https://www.innoq.com/en/staff/stefan-negele/), [Jochen Christ](https://www.innoq.com/en/staff/jochen-christ/), and [Simon Harrer](https://www.innoq.com/en/staff/dr-simon-harrer/).
+This terraform module is maintained by [Stefan Negele](https://www.innoq.com/en/staff/stefan-negele/), [Christine Koppelt](https://www.innoq.com/de/staff/christine-koppelt/), [Jochen Christ](https://www.innoq.com/en/staff/jochen-christ/), and [Simon Harrer](https://www.innoq.com/en/staff/dr-simon-harrer/).
 
 ## License
 
