@@ -32,7 +32,7 @@ data "archive_file" "info_lambda_archive" {
 }
 
 resource "google_storage_bucket" "bucket" {
-  name                        = "${var.name}-info-gfc-source"
+  name                        = "${var.name}-info-gfc-source-${data.archive_file.info_lambda_archive.output_md5}"
   location                    = var.gcp.region
   uniform_bucket_level_access = true
 }
